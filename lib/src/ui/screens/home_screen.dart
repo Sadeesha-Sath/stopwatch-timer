@@ -51,7 +51,7 @@ class HomeScreenState extends State<HomeScreen> {
           color: kBackgroundColor,
           child: SizedBox(
             width: width,
-            height: kBottomNavigationBarHeight - 5,
+            height: kBottomNavigationBarHeight,
             child: Row(
               children: List.unmodifiable(
                 Iterable.generate(3, _buildCustomBottomNavBarItem),
@@ -61,6 +61,7 @@ class HomeScreenState extends State<HomeScreen> {
         ),
         body: SizedBox.expand(
           child: PageView(
+            physics: BouncingScrollPhysics(),
             controller: _pageController,
             onPageChanged: (index) {
               setState(() => _currentIndex = index);
@@ -78,6 +79,7 @@ class HomeScreenState extends State<HomeScreen> {
     bool _isSelected = index == _currentIndex;
     return Expanded(
       child: AnimatedContainer(
+        margin: EdgeInsets.only(top: 5),
         decoration: BoxDecoration(
           color: _isSelected ? kCardColor : kBackgroundColor,
           borderRadius: BorderRadius.only(

@@ -15,17 +15,18 @@ class StopwatchScreen extends StatefulWidget {
 
 class _StopwatchScreenState extends State<StopwatchScreen>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  late ValueNotifier<int> _notifier;
   late AnimationController _animationController;
   bool _isPlaying = false;
   Stopwatch _stopwatch = Stopwatch();
   late Timer _stopwatchHandeler;
-  int elsapedMilliseconds = 0;
   List<LapModel> _lapList = [];
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _notifier = ValueNotifier<int>(0);
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 100));
   }
 
   @override
@@ -37,24 +38,35 @@ class _StopwatchScreenState extends State<StopwatchScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // print('building page');
+    print('building page');
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      child: Column(
+      alignment: Alignment.center,
+      child: ListView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         children: [
-          Spacer(
-            flex: 1,
-          ),
+          SizedBox(height: 65),
           Text(
             "Stopwatch",
-            style: TextStyle(fontSize: 30, color: kTitleColor),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30,
+              color: kTitleColor,
+            ),
           ),
-          Spacer(flex: 3),
+          // Spacer(flex: 3),
+          SizedBox(height: 100),
           // StopwatchText(rawMilliseconds: elsapedMilliseconds),
-          _buildText(elsapedMilliseconds),
-          Spacer(
-            flex: 2,
-          ),
+          Align(
+              alignment: Alignment.center,
+              child: ValueListenableBuilder(
+                valueListenable: _notifier,
+                builder: (context, value, __) => _buildText(value as int),
+              )),
+          // Spacer(
+          //   flex: 2,
+          // ),
+          SizedBox(height: 55),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -64,18 +76,18 @@ class _StopwatchScreenState extends State<StopwatchScreen>
                         if (_lapList.isNotEmpty) {
                           var previousLap = _lapList.last;
                           var newLap = LapModel(
-                            totalElsapedMilliseconds: elsapedMilliseconds,
+                            totalElsapedMilliseconds: _notifier.value,
                             number: previousLap.number + 1,
-                            lapMilliseconds: elsapedMilliseconds - previousLap.totalElsapedMilliseconds,
+                            lapMilliseconds: _notifier.value - previousLap.totalElsapedMilliseconds,
                           );
                           setState(() {
                             _lapList.add(newLap);
                           });
                         } else {
                           var newLap = LapModel(
-                            totalElsapedMilliseconds: elsapedMilliseconds,
+                            totalElsapedMilliseconds: _notifier.value,
                             number: 1,
-                            lapMilliseconds: elsapedMilliseconds,
+                            lapMilliseconds: _notifier.value,
                           );
                           setState(() {
                             _lapList.add(newLap);
@@ -95,17 +107,15 @@ class _StopwatchScreenState extends State<StopwatchScreen>
                     _isPlaying = !_isPlaying;
                   });
                   if (_isPlaying) {
-                    setState(() {
-                      _animationController.forward();
-                    });
+                    _animationController.forward();
+
                     _stopwatch..start();
-                    _stopwatchHandeler = Timer.periodic(Duration(milliseconds: 30), (timer) {
+                    _stopwatchHandeler = Timer.periodic(Duration(milliseconds: 40), (timer) {
                       _handleStopwatch();
                     });
                   } else {
-                    setState(() {
-                      _animationController.reverse();
-                    });
+                    _animationController.reverse();
+
                     _stopwatch..stop();
                     if (_stopwatchHandeler.isActive) _stopwatchHandeler.cancel();
                   }
@@ -113,15 +123,17 @@ class _StopwatchScreenState extends State<StopwatchScreen>
                 child: AnimatedIcon(
                   icon: AnimatedIcons.play_pause,
                   size: 60,
-                  progress: _animationController,
+                  progress: CurvedAnimation(
+                    curve: Curves.easeIn,
+                    parent: _animationController,
+                  ),
                 ),
               ),
               OutlinedButton(
                 onPressed: () {
                   _stopwatch..reset();
-                  if (_stopwatchHandeler.isActive) _stopwatchHandeler.cancel();
+                  _notifier.value = 0;
                   setState(() {
-                    elsapedMilliseconds = 0;
                     _lapList.clear();
                   });
                 },
@@ -129,21 +141,14 @@ class _StopwatchScreenState extends State<StopwatchScreen>
               ),
             ],
           ),
-          Spacer(),
-          Visibility(
-            child: Expanded(
-              flex: 8,
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  var reversedList = _lapList.reversed;
-                  return LapCard(lapModel: reversedList.elementAt(index));
-                },
-                itemCount: _lapList.length,
-              ),
-            ),
-            visible: _lapList.isNotEmpty,
-            replacement: Spacer(flex: 8),
-          ),
+          SizedBox(height: 45),
+          ...List.generate(_lapList.length, (index) {
+            var reversedList = _lapList.reversed;
+            return LapCard(lapModel: reversedList.elementAt(index));
+          }),
+          SizedBox(
+            height: 5,
+          )
         ],
       ),
     );
@@ -151,10 +156,7 @@ class _StopwatchScreenState extends State<StopwatchScreen>
 
   void _handleStopwatch() {
     if (_isPlaying) {
-      setState(() {
-        elsapedMilliseconds = _stopwatch.elapsedMilliseconds;
-      });
-      // print(elsapedMilliseconds);
+      _notifier.value = _stopwatch.elapsedMilliseconds;
     }
   }
 
@@ -189,4 +191,3 @@ class _StopwatchScreenState extends State<StopwatchScreen>
   @override
   bool get wantKeepAlive => true;
 }
-

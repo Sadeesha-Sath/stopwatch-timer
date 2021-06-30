@@ -16,7 +16,7 @@ class LapCard extends StatelessWidget {
     int hours = (rawMilliseconds ~/ 3600000);
     int minutes = ((rawMilliseconds ~/ 60000) % 60);
     int seconds = ((rawMilliseconds ~/ 1000) % 60);
-    int milliseconds = ((rawMilliseconds) % 1000);
+    int milliseconds = ((rawMilliseconds ~/ 10) % 100);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
       child: Card(

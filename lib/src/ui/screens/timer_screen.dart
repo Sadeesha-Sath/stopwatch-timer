@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 import 'package:stopwatch_timer/src/ui/widgets/timer_card.dart';
 
 class TimerScreen extends StatelessWidget {
@@ -7,9 +8,17 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-      child: Column(
+      alignment: Alignment.topCenter,
+      child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 15),
         children: [
+          SizedBox(height: 65),
+          Text(
+            "Timer",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: kTitleColor),
+          ),
+          SizedBox(height: 100),
           TimerCard(),
         ],
       ),

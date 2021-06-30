@@ -25,11 +25,11 @@ class _AlarmcardState extends State<Alarmcard> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       color: kCardColor,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 12, 8),
+        padding: const EdgeInsets.fromLTRB(20, 10, 12, 10),
         child: Row(
           children: [
             Text(
-              "03.00",
+              "03:00",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Spacer(
