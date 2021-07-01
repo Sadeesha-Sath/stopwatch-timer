@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             foregroundColor: MaterialStateProperty.all(kAccentColor),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(22),
               ),
             ),
           ),
@@ -44,15 +44,15 @@ class MyApp extends StatelessWidget {
         // textButtonTheme: TextButtonThemeData(
         //   style: ButtonStyle(
         //     textStyle: MaterialStateProperty.all(
-        //       TextStyle(fontSize: 17.5),
+        //       TextStyle(fontSize: 17.5, fontFamily: GoogleFonts.montserrat().fontFamily),
         //     ),
         //     padding: MaterialStateProperty.all(
-        //       EdgeInsets.symmetric(horizontal: 35, vertical: 17.5),
+        //       EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         //     ),
         //     foregroundColor: MaterialStateProperty.all(kAccentColor),
         //     shape: MaterialStateProperty.all(
         //       RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(20),
+        //         borderRadius: BorderRadius.circular(22),
         //       ),
         //     ),
         //   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch_timer/src/models/timer_model.dart';
 import 'package:stopwatch_timer/src/ui/screens/active_timer_screen.dart';
+import 'package:stopwatch_timer/src/ui/screens/set_timer_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 
 class TimerCard extends StatelessWidget {
@@ -15,27 +17,39 @@ class TimerCard extends StatelessWidget {
         children: [
           Expanded(
             flex: 5,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(28, 15, 0, 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Hero(
-                    tag: "title",
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Text(
-                        "Timer 1",
-                        style: TextStyle(fontSize: 16),
-                      ),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SetTimerScreen(
+                      timerModel: TimerModel(duration: Duration(minutes: 3), name: "Timer 1"),
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    "00:03.00",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ],
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(28, 15, 0, 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: "title",
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          "Timer 1",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      "00:03.00",
+                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -43,7 +57,14 @@ class TimerCard extends StatelessWidget {
               flex: 2,
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveTimerScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ActiveTimerScreen(
+                        timerModel: TimerModel(duration: Duration(minutes: 1, seconds: 20), name: "Custom Timer"),
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   decoration: BoxDecoration(color: kCardSectionGoldColor, borderRadius: BorderRadius.circular(22)),

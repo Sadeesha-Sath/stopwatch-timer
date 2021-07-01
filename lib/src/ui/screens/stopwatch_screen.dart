@@ -59,9 +59,9 @@ class _StopwatchScreenState extends State<StopwatchScreen>
           // StopwatchText(rawMilliseconds: elsapedMilliseconds),
           Align(
               alignment: Alignment.center,
-              child: ValueListenableBuilder(
+              child: ValueListenableBuilder<int>(
                 valueListenable: _notifier,
-                builder: (context, value, __) => _buildText(value as int),
+                builder: (context, value, __) => _buildText(value),
               )),
           // Spacer(
           //   flex: 2,
