@@ -5,7 +5,9 @@ import 'package:stopwatch_timer/src/ui/screens/set_timer_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 
 class TimerCard extends StatelessWidget {
-  const TimerCard({Key? key}) : super(key: key);
+  const TimerCard({Key? key, required this.timerModel, required this.index}) : super(key: key);
+  final TimerModel timerModel;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,8 @@ class TimerCard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => SetTimerScreen(
-                      timerModel: TimerModel(duration: Duration(minutes: 3), name: "Timer 1"),
+                      timerModel: timerModel,
+                      index: index,
                     ),
                   ),
                 );
@@ -34,18 +37,18 @@ class TimerCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
-                      tag: "title",
+                      tag: UniqueKey(),
                       child: Material(
                         color: Colors.transparent,
                         child: Text(
-                          "Timer 1",
+                          timerModel.name,
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
                     SizedBox(height: 6),
                     Text(
-                      "00:03.00",
+                      _buildText,
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -60,9 +63,7 @@ class TimerCard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ActiveTimerScreen(
-                        timerModel: TimerModel(duration: Duration(minutes: 1, seconds: 20), name: "Custom Timer"),
-                      ),
+                      builder: (context) => ActiveTimerScreen(timerModel: timerModel),
                     ),
                   );
                 },
@@ -92,5 +93,12 @@ class TimerCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String get _buildText {
+    int hours = (timerModel.durationInMilliseconds ~/ 3600000);
+    int minutes = ((timerModel.durationInMilliseconds ~/ 60000) % 60);
+    int seconds = ((timerModel.durationInMilliseconds ~/ 1000) % 60);
+    return "${hours > 9 ? hours : "0$hours"}:${minutes > 9 ? minutes : "0$minutes"}:${seconds > 9 ? seconds : "0$seconds"}";
   }
 }

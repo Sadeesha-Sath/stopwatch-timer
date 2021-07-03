@@ -173,7 +173,7 @@ class _StopwatchScreenState extends State<StopwatchScreen>
           TextSpan(text: ":", style: TextStyle(color: kUnselectedColor)),
         ],
         TextSpan(text: minutes > 9 ? minutes.toString() : "0$minutes"),
-        TextSpan(text: ".", style: TextStyle(color: kUnselectedColor)),
+        TextSpan(text: ":", style: TextStyle(color: kUnselectedColor)),
         TextSpan(text: seconds > 9 ? seconds.toString() : "0$seconds"),
         TextSpan(
           text: milliseconds > 9 ? ".$milliseconds" : ".0$milliseconds",

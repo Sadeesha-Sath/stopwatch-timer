@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:stopwatch_timer/src/models/alarm_model.dart';
+import 'package:stopwatch_timer/src/models/timer_model.dart';
+import 'package:stopwatch_timer/src/services/database.dart';
 import 'package:stopwatch_timer/src/ui/screens/home_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(AlarmModelAdapter());
+  Hive.registerAdapter(TimerModelAdapter());
+  await Database.init();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,22 +53,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        // textButtonTheme: TextButtonThemeData(
-        //   style: ButtonStyle(
-        //     textStyle: MaterialStateProperty.all(
-        //       TextStyle(fontSize: 17.5, fontFamily: GoogleFonts.montserrat().fontFamily),
-        //     ),
-        //     padding: MaterialStateProperty.all(
-        //       EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        //     ),
-        //     foregroundColor: MaterialStateProperty.all(kAccentColor),
-        //     shape: MaterialStateProperty.all(
-        //       RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(22),
-        //       ),
-        //     ),
-        //   ),
-        // ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: kBackgroundColor,
           enableFeedback: true,
@@ -64,5 +60,13 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(),
     );
+  }
+
+  @override
+  void dispose() async {
+    await Hive.box("alarms").compact();
+    await Hive.box('timers').compact();
+    await Hive.close();
+    super.dispose();
   }
 }
