@@ -18,7 +18,7 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
     };
     return TimerModel(
       name: fields[0] as String,
-      durationInMilliseconds: fields[2] as int,
+      durationInSeconds: fields[2] as int,
     );
   }
 
@@ -29,7 +29,7 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.durationInMilliseconds);
+      ..write(obj.durationInSeconds);
   }
 
   @override

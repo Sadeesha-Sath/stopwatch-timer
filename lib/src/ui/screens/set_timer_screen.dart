@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stopwatch_timer/src/models/picker_value_enum.dart';
 import 'package:stopwatch_timer/src/models/timer_model.dart';
 import 'package:stopwatch_timer/src/services/database.dart';
+import 'package:stopwatch_timer/src/ui/screens/active_timer_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 import 'package:stopwatch_timer/src/ui/widgets/set_timer_wheel.dart';
 
@@ -18,22 +19,23 @@ class SetTimerScreen extends StatefulWidget {
 class _SetTimerScreenState extends State<SetTimerScreen> {
   late TextEditingController _nameController;
   late FocusNode _focusNode;
-  late Duration _duration;
+  late ValueNotifier<Duration> _duration;
   @override
   void initState() {
-    super.initState();
     _focusNode = FocusNode();
     _nameController = TextEditingController(text: widget.timerModel.name);
-    _duration = Duration(milliseconds: widget.timerModel.durationInMilliseconds);
+    _duration = ValueNotifier(Duration(seconds: widget.timerModel.durationInSeconds));
 
     _focusNode.addListener(() {
       setState(() {});
     });
+    super.initState();
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _duration.dispose();
     super.dispose();
   }
 
@@ -50,35 +52,54 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
             children: [
               SizedBox(height: 10),
               Container(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.maybePop(context);
-                  },
-                  icon: Icon(
-                    CupertinoIcons.arrow_turn_up_left,
-                  ),
+                alignment: Alignment.topCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.maybePop(context);
+                      },
+                      icon: Icon(
+                        CupertinoIcons.arrow_turn_up_left,
+                      ),
+                    ),
+                    Visibility(
+                      visible: widget.index != null,
+                      child: IconButton(
+                        onPressed: () {
+                          Database.deleteTimer(widget.index!);
+                          Navigator.maybePop(context);
+                        },
+                        icon: Icon(
+                          CupertinoIcons.trash,
+                          color: Colors.redAccent.shade100,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 40),
               Container(
-                // padding: EdgeInsets.only(left: 30),
-                // decoration: BoxDecoration(borderRadius: BorderRadius.circular(22), color: kCardColor),
                 child: TextField(
                   focusNode: _focusNode,
                   style: TextStyle(fontSize: 22),
                   decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                      // border: InputBorder.none,
-                      filled: true,
-                      fillColor: kCardColor,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(22),
-                        borderSide: BorderSide.none,
-                      ),
-                      labelText: "Name",
-                      // floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      labelStyle: TextStyle(fontSize: 18, color: _focusNode.hasFocus ? kAccentColor : null)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    filled: true,
+                    fillColor: kCardColor,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(22),
+                      borderSide: BorderSide.none,
+                    ),
+                    labelText: "Name",
+                    // floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    labelStyle: TextStyle(
+                      fontSize: 18,
+                      color: _focusNode.hasFocus ? kAccentColor : null,
+                    ),
+                  ),
                   controller: _nameController,
                 ),
               ),
@@ -89,11 +110,11 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                 padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
                 decoration: BoxDecoration(color: kCardColor, borderRadius: BorderRadius.circular(22)),
                 child: SetTimerWheel(
-                  initialValue: widget.timerModel.durationInMilliseconds,
+                  initialValue: widget.timerModel.durationInSeconds,
                   callback: (int value, PickerValue mode) {
-                    var seconds = _duration.inSeconds % 60;
-                    var minutes = _duration.inMinutes % 60;
-                    var hours = _duration.inHours;
+                    var seconds = _duration.value.inSeconds % 60;
+                    var minutes = _duration.value.inMinutes % 60;
+                    var hours = _duration.value.inHours;
                     if (mode == PickerValue.hours) {
                       hours = value;
                     } else if (mode == PickerValue.minutes) {
@@ -101,9 +122,8 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                     } else {
                       seconds = value;
                     }
-                    setState(() {
-                      _duration = Duration(hours: hours, minutes: minutes, seconds: seconds);
-                    });
+
+                    _duration.value = Duration(hours: hours, minutes: minutes, seconds: seconds);
                   },
                 ),
               ),
@@ -116,8 +136,7 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                         onPressed: () {
                           Database.putTimers(
                             TimerModel(
-                              durationInMilliseconds: _duration.inMilliseconds,
-                              // TODO Change this to seconds
+                              durationInSeconds: _duration.value.inSeconds,
                               name: _nameController.text,
                             ),
                             index: widget.index,
@@ -136,9 +155,16 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                     child: OutlinedButton(
                       style: ButtonStyle(side: MaterialStateProperty.all(BorderSide(color: kAccentColor, width: 0.8))),
                       onPressed: () {
-                        //delete for now
-                        Database.deleteTimer(widget.index!);
-                        Navigator.maybePop(context);
+                        TimerModel _newModel = TimerModel(
+                          durationInSeconds: _duration.value.inSeconds,
+                          name: _nameController.text,
+                        );
+                        Database.putTimers(
+                          _newModel,
+                          index: widget.index,
+                        );
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) => ActiveTimerScreen(timerModel: _newModel)));
                       },
                       child: Text(
                         "Save and Start",

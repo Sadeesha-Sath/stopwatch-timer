@@ -6,7 +6,7 @@ class TimerModel {
   @HiveField(0)
   String name;
   @HiveField(2)
-  int durationInMilliseconds;
+  int durationInSeconds;
 
-  TimerModel({this.name = "Timer", required this.durationInMilliseconds});
+  TimerModel({this.name = "Timer", required this.durationInSeconds});
 }

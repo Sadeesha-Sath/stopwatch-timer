@@ -27,7 +27,7 @@ class _ActiveTimerScreenState extends State<ActiveTimerScreen> {
     // print("Done");
     // _handleTimer.cancel();
     // });
-    _totalDuration = Duration(milliseconds: widget.timerModel.durationInMilliseconds);
+    _totalDuration = Duration(seconds: widget.timerModel.durationInSeconds);
     _textNotifier = ValueNotifier<Duration>(_totalDuration);
     // To eliminate the first second gap between stopwatch starting and _handleTimer updating
     _handleCallback();
@@ -174,7 +174,7 @@ class _ActiveTimerScreenState extends State<ActiveTimerScreen> {
             child: CircularProgressIndicator(
               strokeWidth: 0.75,
               color: kPrimaryColor,
-              value: duration.inMilliseconds / widget.timerModel.durationInMilliseconds,
+              value: duration.inMilliseconds / widget.timerModel.durationInSeconds,
             ),
           ),
         ),

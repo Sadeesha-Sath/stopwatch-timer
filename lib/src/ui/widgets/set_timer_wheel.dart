@@ -15,9 +15,9 @@ class SetTimerWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int hours = (initialValue ~/ 3600000);
-    int minutes = ((initialValue ~/ 60000) % 60);
-    int seconds = ((initialValue ~/ 1000) % 60);
+    int hours = initialValue ~/ 3600;
+    int minutes = (initialValue ~/ 60) % 60;
+    int seconds = initialValue % 60;
     return Row(
       children: [
         CustomPicker(
@@ -76,7 +76,6 @@ class CustomPicker extends StatelessWidget {
               looping: mode != PickerValue.hours,
               itemExtent: 38,
               onSelectedItemChanged: (int value) {
-                //TODO Add logic
                 callback(value, mode);
               },
               children: [

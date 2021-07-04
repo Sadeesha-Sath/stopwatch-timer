@@ -14,4 +14,9 @@ class AlarmModel {
   TimeOfDay alarmTime;
 
   AlarmModel({required this.alarmTime, this.title, this.activeDays = const [], this.isActive = true});
+  AlarmModel.updateState(AlarmModel alarmModel, bool value)
+      : title = alarmModel.title,
+        activeDays = alarmModel.activeDays,
+        alarmTime = alarmModel.alarmTime,
+        isActive = value;
 }

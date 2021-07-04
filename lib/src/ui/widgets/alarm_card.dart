@@ -1,54 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch_timer/src/models/alarm_model.dart';
+import 'package:stopwatch_timer/src/services/database.dart';
+import 'package:stopwatch_timer/src/ui/screens/edit_alarm_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 
-class Alarmcard extends StatefulWidget {
-  Alarmcard({Key? key, required this.value}) : super(key: key);
+class Alarmcard extends StatelessWidget {
+  Alarmcard({Key? key, required this.alarmModel, required this.index}) : super(key: key);
 
-  final bool value;
-  @override
-  _AlarmcardState createState() => _AlarmcardState();
-}
-
-class _AlarmcardState extends State<Alarmcard> {
-  late bool _value;
-
-  @override
-  void initState() {
-    _value = widget.value;
-    super.initState();
-  }
+  final AlarmModel alarmModel;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-      color: kCardColor,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 12, 10),
-        child: Row(
-          children: [
-            Text(
-              "03:00",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        color: kCardColor,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditAlarmScreen(
+                  alarmModel: alarmModel,
+                ),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 12, 10),
+            child: Row(
+              children: [
+                Text(
+                  "03:00",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                Spacer(
+                  flex: 4,
+                ),
+                Text(
+                  "S  M  T  W  T  F  S",
+                  style: TextStyle(fontSize: 14),
+                ),
+                Spacer(),
+                Switch(
+                  value: alarmModel.isActive,
+                  onChanged: (value) {
+                    Database.putAlarms(AlarmModel.updateState(alarmModel, value), index: index);
+                  },
+                ),
+              ],
             ),
-            Spacer(
-              flex: 4,
-            ),
-            Text(
-              "S  M  T  W  T  F  S",
-              style: TextStyle(fontSize: 14),
-            ),
-            Spacer(),
-            Switch(
-              value: _value,
-              onChanged: (value) {
-                setState(() {
-                  _value = value;
-                });
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

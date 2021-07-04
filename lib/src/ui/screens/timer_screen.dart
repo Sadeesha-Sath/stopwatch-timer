@@ -32,7 +32,7 @@ class _TimerScreenState extends State<TimerScreen> {
                 MaterialPageRoute(
                   builder: (context) => SetTimerScreen(
                     timerModel: TimerModel(
-                      durationInMilliseconds: 0,
+                      durationInSeconds: 0,
                     ),
                   ),
                 ),

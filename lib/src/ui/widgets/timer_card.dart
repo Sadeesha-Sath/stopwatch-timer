@@ -96,9 +96,9 @@ class TimerCard extends StatelessWidget {
   }
 
   String get _buildText {
-    int hours = (timerModel.durationInMilliseconds ~/ 3600000);
-    int minutes = ((timerModel.durationInMilliseconds ~/ 60000) % 60);
-    int seconds = ((timerModel.durationInMilliseconds ~/ 1000) % 60);
+    int hours = timerModel.durationInSeconds ~/ 3600;
+    int minutes = (timerModel.durationInSeconds ~/ 60) % 60;
+    int seconds = timerModel.durationInSeconds % 60;
     return "${hours > 9 ? hours : "0$hours"}:${minutes > 9 ? minutes : "0$minutes"}:${seconds > 9 ? seconds : "0$seconds"}";
   }
 }

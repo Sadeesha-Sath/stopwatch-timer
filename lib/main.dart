@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:stopwatch_timer/src/models/alarm_model.dart';
 import 'package:stopwatch_timer/src/models/timer_model.dart';
@@ -9,8 +10,10 @@ import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 
 void main() async {
   await Hive.initFlutter();
-  Hive.registerAdapter(AlarmModelAdapter());
-  Hive.registerAdapter(TimerModelAdapter());
+  Hive
+    ..registerAdapter<AlarmModel>(AlarmModelAdapter())
+    ..registerAdapter<TimerModel>(TimerModelAdapter())
+    ..registerAdapter<TimeOfDay>(TimeOfDayAdapter());
   await Database.init();
   runApp(MyApp());
 }
