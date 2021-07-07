@@ -18,24 +18,27 @@ class AlarmModelAdapter extends TypeAdapter<AlarmModel> {
     };
     return AlarmModel(
       alarmTime: fields[3] as TimeOfDay,
-      title: fields[0] as String?,
+      name: fields[0] as String,
       activeDays: (fields[1] as List).cast<int>(),
       isActive: fields[2] as bool,
+      isVibrate: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, AlarmModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.name)
       ..writeByte(1)
       ..write(obj.activeDays)
       ..writeByte(2)
       ..write(obj.isActive)
       ..writeByte(3)
-      ..write(obj.alarmTime);
+      ..write(obj.alarmTime)
+      ..writeByte(4)
+      ..write(obj.isVibrate);
   }
 
   @override

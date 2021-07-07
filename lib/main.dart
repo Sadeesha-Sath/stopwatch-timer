@@ -7,14 +7,17 @@ import 'package:stopwatch_timer/src/models/timer_model.dart';
 import 'package:stopwatch_timer/src/services/database.dart';
 import 'package:stopwatch_timer/src/ui/screens/home_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive
     ..registerAdapter<AlarmModel>(AlarmModelAdapter())
     ..registerAdapter<TimerModel>(TimerModelAdapter())
     ..registerAdapter<TimeOfDay>(TimeOfDayAdapter());
   await Database.init();
+  await AndroidAlarmManager.initialize();
   runApp(MyApp());
 }
 

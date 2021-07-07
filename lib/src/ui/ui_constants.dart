@@ -6,7 +6,7 @@ const Color kAccentColor = Color(0xFFF9E30B);
 const Color kUnselectedColor = Color(0xFF828488);
 const Color kCardColor = Color(0xFF2D314F);
 const Color kCardSectionGoldColor = Color(0xFFE4C032);
-const Color kTitleColor = Color(0xFFE3E3E3);
+const Color kTextColor = Color(0xFFE3E3E3);
 
 Set<MaterialState> _activeStates = {
   MaterialState.pressed,

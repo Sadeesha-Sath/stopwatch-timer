@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:stopwatch_timer/src/models/alarm_model.dart';
 import 'package:stopwatch_timer/src/services/database.dart';
+import 'package:stopwatch_timer/src/ui/screens/edit_alarm_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 import 'package:stopwatch_timer/src/ui/widgets/alarm_card.dart';
 
@@ -23,8 +24,15 @@ class _AlarmScreenState extends State<AlarmScreen> {
           right: 20,
           child: FloatingActionButton(
             onPressed: () {
-              Database.putAlarms(
-                AlarmModel(alarmTime: TimeOfDay(hour: 3, minute: 2), title: "Alarm 2"),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditAlarmScreen(
+                    alarmModel: AlarmModel(
+                      alarmTime: TimeOfDay(hour: 0, minute: 0),
+                    ),
+                  ),
+                ),
               );
             },
             child: Icon(
@@ -48,7 +56,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
           SizedBox(height: 65),
           Text(
             "Alarms",
-            style: TextStyle(fontSize: 30, color: kTitleColor),
+            style: TextStyle(fontSize: 30, color: kTextColor),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 100),
@@ -57,7 +65,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
             child: Container(
               padding: EdgeInsets.all(15),
               child: Text(
-                "Oops, no alarms set yet. Let's create one, shall we?",
+                "Oops, no alarms are set. Let's create one, shall we?",
                 style: TextStyle(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
@@ -65,7 +73,10 @@ class _AlarmScreenState extends State<AlarmScreen> {
           ),
           ...List.generate(value.length, (index) {
             AlarmModel alarmModel = Database.alarmBox.getAt(index) as AlarmModel;
-            return Alarmcard(alarmModel: alarmModel, index: index,);
+            return Alarmcard(
+              alarmModel: alarmModel,
+              index: index,
+            );
           }),
           SizedBox(height: 40),
         ],

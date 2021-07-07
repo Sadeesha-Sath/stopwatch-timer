@@ -64,7 +64,7 @@ class CustomPicker extends StatelessWidget {
       children: [
         Text(
           mode == PickerValue.hours ? "Hours": mode == PickerValue.minutes ? "Minutes": "Seconds",
-          style: TextStyle(fontSize: 20, color: kTitleColor),
+          style: TextStyle(fontSize: 20, color: kTextColor),
         ),
         SizedBox(
           width: 100,
@@ -82,7 +82,7 @@ class CustomPicker extends StatelessWidget {
                 for (var i = 0; i < (mode== PickerValue.hours ? 100 : 60); i += 1)
                   Text(
                     i.toString(),
-                    style: TextStyle(color: kTitleColor, fontFamily: GoogleFonts.lato().fontFamily, fontSize: 25),
+                    style: TextStyle(color: kTextColor, fontFamily: GoogleFonts.lato().fontFamily, fontSize: 25),
                   ),
               ],
             ),

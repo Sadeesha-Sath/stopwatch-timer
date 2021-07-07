@@ -35,13 +35,13 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
   @override
   void dispose() {
     _focusNode.dispose();
+    _nameController.dispose();
     _duration.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -122,7 +122,6 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                     } else {
                       seconds = value;
                     }
-
                     _duration.value = Duration(hours: hours, minutes: minutes, seconds: seconds);
                   },
                 ),

@@ -51,7 +51,7 @@ class _StopwatchScreenState extends State<StopwatchScreen>
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 30,
-              color: kTitleColor,
+              color: kTextColor,
             ),
           ),
           // Spacer(flex: 3),

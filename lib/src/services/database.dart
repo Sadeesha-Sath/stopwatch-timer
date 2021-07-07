@@ -7,7 +7,7 @@ class Database {
   static late Box timerBox;
 
   static Future<void> init() async {
-alarmBox = await Hive.openBox('alarms');
+    alarmBox = await Hive.openBox('alarms');
     timerBox = await Hive.openBox('timers');
   }
 
@@ -40,10 +40,11 @@ alarmBox = await Hive.openBox('alarms');
   }
 
   static deleteAlarm(int index) {
-    if (Hive.isBoxOpen('alarm')) {
+    if (Hive.isBoxOpen('alarms')) {
       alarmBox.deleteAt(index);
     }
   }
+
   static deleteTimer(int index) {
     if (Hive.isBoxOpen('timers')) {
       timerBox.deleteAt(index);

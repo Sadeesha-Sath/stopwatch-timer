@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stopwatch_timer/src/models/timer_model.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
@@ -45,8 +46,20 @@ class _ActiveTimerScreenState extends State<ActiveTimerScreen> {
     var newValue = _totalDuration - _stopwatch.elapsed;
     _textNotifier.value = newValue;
     if (newValue <= Duration.zero) {
-      // TODO Add timer complete handling
-      print('done');
+      FlutterRingtonePlayer.playNotification(volume: 1, looping: true, asAlarm: true);
+      Timer(Duration(seconds: 15), () => FlutterRingtonePlayer.stop());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 15),
+          content: Text("The timer has expired", style: GoogleFonts.montserrat().copyWith(fontSize: 16)),
+          action: SnackBarAction(
+            label: "Got it!",
+            textColor: Colors.blueAccent,
+            onPressed: () => FlutterRingtonePlayer.stop(),
+          ),
+        ),
+      );
       _handleTimer.cancel();
       setState(() {
         _stopwatch
@@ -85,7 +98,7 @@ class _ActiveTimerScreenState extends State<ActiveTimerScreen> {
                   child: Text(
                     widget.timerModel.name,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30, color: kTitleColor),
+                    style: TextStyle(fontSize: 30, color: kTextColor),
                   ),
                 ),
               ),

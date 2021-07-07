@@ -31,21 +31,6 @@ class HomeScreenState extends State<HomeScreen> {
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        // bottomNavigationBar: BottomNavigationBar(
-        //   currentIndex: _currentIndex,
-        //   selectedFontSize: 14,
-        //   unselectedFontSize: 14,
-        //   onTap: (index) {
-        //     setState(() {
-        //       _pageController.animateToPage(index, duration: Duration(milliseconds: 400), curve: Curves.easeInOut);
-        //     });
-        //   },
-        //   items: [
-        //     BottomNavigationBarItem(icon: Icon(Icons.alarm), label: "Alarms"),
-        //     BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Stopwatch"),
-        //     BottomNavigationBarItem(icon: Icon(Icons.watch_later_outlined), label: "Timer"),
-        //   ],
-        // ),
         bottomNavigationBar: BottomAppBar(
           elevation: 1,
           color: kBackgroundColor,

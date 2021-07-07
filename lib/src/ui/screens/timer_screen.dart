@@ -61,9 +61,20 @@ class _TimerScreenState extends State<TimerScreen> {
             Text(
               "Timer",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 30, color: kTitleColor),
+              style: TextStyle(fontSize: 30, color: kTextColor),
             ),
             SizedBox(height: 100),
+            Visibility(
+              visible: value.isEmpty,
+              child: Container(
+                padding: EdgeInsets.all(15),
+                child: Text(
+                  "Oops, no timers are set. Let's create one, shall we?",
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
             ...List.generate(value.length, (index) {
               TimerModel timerModel = Database.timerBox.getAt(index) as TimerModel;
               return TimerCard(
