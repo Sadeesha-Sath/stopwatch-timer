@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stopwatch_timer/src/models/alarm_model.dart';
 import 'package:stopwatch_timer/src/services/database.dart';
+import 'package:stopwatch_timer/src/ui/screens/select_alarm_sound_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
+import 'package:stopwatch_timer/src/ui/widgets/custom_back_button.dart';
 
 class EditAlarmScreen extends StatefulWidget {
   const EditAlarmScreen({Key? key, required this.alarmModel, this.index}) : super(key: key);
@@ -57,14 +59,7 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.maybePop(context);
-                      },
-                      icon: Icon(
-                        CupertinoIcons.arrow_turn_up_left,
-                      ),
-                    ),
+                    CustomBackButton(),
                     Visibility(
                       visible: widget.index != null,
                       child: IconButton(
@@ -85,7 +80,7 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
               Container(
                 child: TextField(
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(fontSize: 22, color: kTextColor),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     filled: true,
@@ -115,9 +110,8 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Mon, Tue, Sat",
-                          style: TextStyle(color: kTextColor),
+                        LongWeekDays(
+                          activeDays: _activeDays,
                         ),
                         Icon(
                           CupertinoIcons.calendar,
@@ -167,9 +161,9 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
                           children: [
                             Text(
                               "Alarm Time",
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 18, color: kTextColor),
                             ),
-                            Text(_alarmTime.format(context), style: TextStyle(fontSize: 18))
+                            Text(_alarmTime.format(context), style: TextStyle(fontSize: 18, color: kTextColor))
                           ],
                         ),
                       ),
@@ -177,25 +171,30 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
                     Container(
                       padding: EdgeInsets.all(15),
                       width: double.maxFinite,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Alarm Tone",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                "Alarm",
-                                style: TextStyle(fontSize: 14, color: kAccentColor),
-                              ),
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios_outlined)
-                        ],
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SelectAlarmSoundScreen()));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Alarm Tone",
+                                  style: TextStyle(fontSize: 18, color: kTextColor),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  "Alarm",
+                                  style: TextStyle(fontSize: 14, color: kAccentColor),
+                                ),
+                              ],
+                            ),
+                            Icon(Icons.arrow_forward_ios_outlined, color: kTextColor)
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -211,7 +210,7 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
                           children: [
                             Text(
                               "Vibrate",
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 18, color: kTextColor),
                             ),
                             ValueListenableBuilder<bool>(
                               valueListenable: _isVibrate,
@@ -276,6 +275,26 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
   }
 }
 
+class LongWeekDays extends StatelessWidget {
+  const LongWeekDays({
+    Key? key,
+    required this.activeDays,
+  }) : super(key: key);
+  final Set<int> activeDays;
+
+  static const List<String> _daysOfWeekLong = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+          children: List.generate(
+              7, (index) => TextSpan(text: activeDays.contains(index) ? "${_daysOfWeekLong[index]}, " : ""))),
+      style: TextStyle(color: kTextColor),
+    );
+  }
+}
+
 class WeekDay extends StatelessWidget {
   const WeekDay({
     Key? key,
@@ -301,7 +320,12 @@ class WeekDay extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 8),
         decoration: isActive ? BoxDecoration(border: Border.all(color: kAccentColor), shape: BoxShape.circle) : null,
         padding: isActive ? EdgeInsets.all(3) : null,
-        child: Text(_daysOfWeek.elementAt(index)),
+        child: Text(
+          _daysOfWeek.elementAt(index),
+          style: TextStyle(
+            color: kTextColor,
+          ),
+        ),
       ),
     );
   }

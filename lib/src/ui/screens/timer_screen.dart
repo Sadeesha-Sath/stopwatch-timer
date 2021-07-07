@@ -55,6 +55,7 @@ class _TimerScreenState extends State<TimerScreen> {
       valueListenable: _timers,
       builder: (context, value, __) {
         return ListView(
+          physics: BouncingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 15),
           children: [
             SizedBox(height: 65),
@@ -70,7 +71,7 @@ class _TimerScreenState extends State<TimerScreen> {
                 padding: EdgeInsets.all(15),
                 child: Text(
                   "Oops, no timers are set. Let's create one, shall we?",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, color: kTextColor),
                   textAlign: TextAlign.center,
                 ),
               ),

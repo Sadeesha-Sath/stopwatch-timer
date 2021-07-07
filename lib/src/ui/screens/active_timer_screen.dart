@@ -5,6 +5,7 @@ import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stopwatch_timer/src/models/timer_model.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
+import 'package:stopwatch_timer/src/ui/widgets/custom_back_button.dart';
 
 class ActiveTimerScreen extends StatefulWidget {
   const ActiveTimerScreen({Key? key, required this.timerModel}) : super(key: key);
@@ -75,19 +76,13 @@ class _ActiveTimerScreenState extends State<ActiveTimerScreen> {
       body: SafeArea(
         child: Container(
           child: ListView(
+            physics: BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 20),
             children: [
               SizedBox(height: 10),
               Container(
                 alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.maybePop(context);
-                  },
-                  icon: Icon(
-                    CupertinoIcons.arrow_turn_up_left,
-                  ),
-                ),
+                child: CustomBackButton(),
               ),
               SizedBox(height: 10),
               // SizedBox(height: 65),

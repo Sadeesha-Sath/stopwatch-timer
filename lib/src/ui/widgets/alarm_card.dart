@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:stopwatch_timer/src/models/alarm_model.dart';
 import 'package:stopwatch_timer/src/services/database.dart';
@@ -13,7 +14,7 @@ class Alarmcard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Card(
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
@@ -31,7 +32,7 @@ class Alarmcard extends StatelessWidget {
             );
           },
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 12, 10),
+            padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
             child: Row(
               children: [
                 Visibility(
@@ -42,7 +43,7 @@ class Alarmcard extends StatelessWidget {
                     children: [
                       Text(
                         alarmModel.alarmTime.format(context),
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: kTextColor),
                       ),
                       SizedBox(height: 5),
                       Text(
@@ -55,11 +56,10 @@ class Alarmcard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
                       alarmModel.alarmTime.format(context),
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: kTextColor),
                     ),
                   ),
                 ),
-
                 Spacer(
                   flex: 4,
                 ),
@@ -69,15 +69,12 @@ class Alarmcard extends StatelessWidget {
                       7,
                       (index) => TextSpan(
                         text: _daysOfWeek[index],
-                        style: TextStyle(color: alarmModel.activeDays.toSet().contains(index) ? kAccentColor : null),
+                        style:
+                            TextStyle(color: alarmModel.activeDays.toSet().contains(index) ? kAccentColor : kTextColor),
                       ),
                     ),
                   ),
                 ),
-                // Text(
-                //   "S  M  T  W  T  F  S",
-                //   style: TextStyle(fontSize: 14),
-                // ),
                 Spacer(),
                 Switch(
                   value: alarmModel.isActive,

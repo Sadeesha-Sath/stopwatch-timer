@@ -10,7 +10,6 @@ import 'package:stopwatch_timer/src/ui/ui_constants.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive
     ..registerAdapter<AlarmModel>(AlarmModelAdapter())
@@ -18,6 +17,7 @@ void main() async {
     ..registerAdapter<TimeOfDay>(TimeOfDayAdapter());
   await Database.init();
   await AndroidAlarmManager.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -41,6 +41,11 @@ class _MyAppState extends State<MyApp> {
         switchTheme: SwitchThemeData(
           trackColor: TrackColor(),
           thumbColor: ThumbColor(),
+        ),
+        appBarTheme: AppBarTheme(
+            backgroundColor: kBackgroundColor,
+            brightness: Brightness.dark,
+            centerTitle: true,
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: ButtonStyle(

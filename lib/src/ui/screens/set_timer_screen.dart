@@ -5,6 +5,7 @@ import 'package:stopwatch_timer/src/models/timer_model.dart';
 import 'package:stopwatch_timer/src/services/database.dart';
 import 'package:stopwatch_timer/src/ui/screens/active_timer_screen.dart';
 import 'package:stopwatch_timer/src/ui/ui_constants.dart';
+import 'package:stopwatch_timer/src/ui/widgets/custom_back_button.dart';
 import 'package:stopwatch_timer/src/ui/widgets/set_timer_wheel.dart';
 
 class SetTimerScreen extends StatefulWidget {
@@ -56,14 +57,7 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.maybePop(context);
-                      },
-                      icon: Icon(
-                        CupertinoIcons.arrow_turn_up_left,
-                      ),
-                    ),
+                    CustomBackButton(),
                     Visibility(
                       visible: widget.index != null,
                       child: IconButton(
@@ -84,7 +78,7 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
               Container(
                 child: TextField(
                   focusNode: _focusNode,
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(fontSize: 22, color: kTextColor),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     filled: true,
@@ -97,7 +91,7 @@ class _SetTimerScreenState extends State<SetTimerScreen> {
                     // floatingLabelBehavior: FloatingLabelBehavior.auto,
                     labelStyle: TextStyle(
                       fontSize: 18,
-                      color: _focusNode.hasFocus ? kAccentColor : null,
+                      color: _focusNode.hasFocus ? kAccentColor :null,
                     ),
                   ),
                   controller: _nameController,

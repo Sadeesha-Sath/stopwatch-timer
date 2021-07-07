@@ -51,6 +51,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
     return ValueListenableBuilder<Box>(
       valueListenable: alarms,
       builder: (context, value, __) => ListView(
+        physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 15),
         children: [
           SizedBox(height: 65),
@@ -66,7 +67,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
               padding: EdgeInsets.all(15),
               child: Text(
                 "Oops, no alarms are set. Let's create one, shall we?",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: kTextColor),
                 textAlign: TextAlign.center,
               ),
             ),
